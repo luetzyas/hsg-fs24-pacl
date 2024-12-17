@@ -1,8 +1,10 @@
 # imports
 import inspect as ip
 import modules.support as sup
+import custom_classes.custome_exceptions as ex
 import requests
 import json
+import sys
 
 # constants
 API_USER_ID = 12982
@@ -21,10 +23,12 @@ HEADERS = {
         
 
 # Utility function to save API response to a file
-def save_json_to_file(data):
+def save_json_to_file(trace: bool, data):
+    sup.traceability_handling_prints(trace, ip.currentframe().f_code.co_name)
+
     try:
         # set filename based on topic
-        filename = f"bin/resources/json/api_response.json"
+        filename = "bin/resources/json/api_response.json"
 
         # open file (overwrite)
         with open(filename, 'w') as f:
@@ -36,7 +40,9 @@ def save_json_to_file(data):
 
 
 # Function to set the params term together
-def set_params(term: str):
+def set_params(trace: bool, term: str):
+    sup.traceability_handling_prints(trace, ip.currentframe().f_code.co_name)
+
     return {
         "uid": API_USER_ID,
         "tokenid": API_TOKEN,
@@ -51,7 +57,7 @@ def call_api(trace: bool, topic: int, search: str):
 
     try:
         # determine params for api call
-        params = set_params(search)
+        params = set_params(trace, search)
 
         # select API based on user entry
         match topic:
@@ -67,11 +73,19 @@ def call_api(trace: bool, topic: int, search: str):
         response.raise_for_status()  # Raise an error for HTTP issues
 
         # Print and return the JSON response
-        print("API Response:", response.json())
+        # print("API Response:", response.json())
         data = response.json()
-        save_json_to_file(data)
+
+        # Check if the response is empty or does not contain "results"
+        if not data:
+            raise ex.NotFound(f"No valid results found with search: '{search}'.")
+
+        # save response to file
+        save_json_to_file(trace, data)
         return data
+    except ex.NotFound as e:
+        print(f"Error: {e}")
+        sys.exit(1)
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
-        return None
-    
+        sys.exit(1)    

@@ -3,6 +3,7 @@ import custom_classes.custome_exceptions as ex
 import modules.support as sup
 import inspect as ip
 import modules.api_module as api
+import sys
 
 # input user console to select category for co-sentiment analyse 
 def user_input(trace: bool) -> None:
@@ -21,6 +22,7 @@ def user_input(trace: bool) -> None:
         return selection
     except ex.InvalidOption as e:
         print(e)
+        sys.exit(1)
 
 
 # user input handling
@@ -47,3 +49,36 @@ def user_input_options(trace: bool, options):
     print(f"You selected: {options[i_int-1][2]}")
     return options[i_int-1][0]
     
+
+# function for the user to select the title to continue from the api response
+def select_title_to_analyse(trace: bool, titles):
+    sup.traceability_handling_prints(trace, ip.currentframe().f_code.co_name)
+
+    # Display titles with numbers
+    print("\nAvailable Titles:")
+    for idx, title in enumerate(titles, start=1):
+        print(f"{idx}: {title}")
+
+    # Prompt user for selection
+    while True:
+        try:
+            user_input = input("\nEnter the number of the title to analyze: ").strip()
+            if not user_input.isdigit():
+                print("Invalid input. Please enter a number.")
+                continue
+
+            selected_idx = int(user_input)
+            if 1 <= selected_idx <= len(titles):
+                selected_title = titles[selected_idx - 1]
+                print(f"You selected: {selected_title}")
+                return selected_title
+            else:
+                raise ex.InvalidOptionf("Invalid number. Please choose a number between 1 and {len(titles)}.")
+        except ex.InvalidOption as e:
+            print(f"Error: {e}")
+            sys.exit(1)
+        except Exception as e:
+            print(f"Unexpected error: {e}")
+            sys.exit(1)
+
+

@@ -2,6 +2,7 @@
 import modules.input_module as i
 import modules.support as sup
 import modules.api_module as api
+import modules.file_module as fi
 
 # guiding parameters
 trace = True
@@ -18,5 +19,12 @@ search = str(input("Please enter your search: "))
 # save json from api in bin/resources/json
 api.call_api(trace, topic, search)
 
-# print all results (only title) for the user to select
+# select titles for user selection
+titles = fi.get_titles_from_file(trace, topic)
+
+# user select title from list
+selected_title = i.select_title_to_analyse(trace, titles)
+
+
+
 
