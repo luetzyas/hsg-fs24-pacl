@@ -10,3 +10,8 @@ class NotFound(Exception):
 class InvalidOption(Exception):
     """Custom exception for handling not found errors."""
     pass
+
+# for Empty Dataframes
+class DataFrame_Empty(Exception):
+    """Custom exception for handling empty dataframes."""
+    pass

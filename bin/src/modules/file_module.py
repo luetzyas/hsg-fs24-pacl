@@ -5,6 +5,7 @@ import json
 import os
 import custom_classes.custome_exceptions as ex
 import sys
+import pandas as pd
 
 # constants
 FILE_PATH= 'bin/resources/json/api_response.json'
@@ -29,6 +30,7 @@ def get_titles_from_file(trace: bool, topic: int):
             case 1:
                 titles = [
                     f"{entry.get('title', 'No Movie')} ({entry.get('writer', 'Unknown Writer')})"
+                    #f"{entry.get('title', 'No Movie')} ({entry.get('subtitle', 'Unknown Writer')})"
                     for entry in data.get("result", [])
                     if isinstance(entry, dict)
                 ]
@@ -56,5 +58,27 @@ def get_titles_from_file(trace: bool, topic: int):
         print(f"Unexpected error: {e}")
         sys.exit(1)
     except ex.NotFound as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
+# save dataframe in csv file
+def save_df_to_csv_file(trace:bool, df: pd.DataFrame):
+    sup.traceability_handling_prints(trace, ip.currentframe().f_code.co_name)
+
+    try:    
+        # check if dataframe is empty
+        if df.empty:
+            raise ex.NotFound("No data to save.")
+        print(df)
+        # Save DataFrame to CSV
+        output_dir = "bin/resources/csv/"
+        os.makedirs(output_dir, exist_ok=True)  # Ensure the directory exists
+        csv_filename = os.path.join(output_dir, "movie_result.csv")
+        df.to_csv(csv_filename, index=False)
+        print(f"Movie details saved to {csv_filename}")
+    except ex.NotFound as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+    except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)
