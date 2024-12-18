@@ -9,7 +9,8 @@ The project comprises three main components:
 1. **Reusable Functions:** Utility functions for data preprocessing, sentiment analysis, and visualization.
 2. **Main Process:** Integration of the above components to execute the some analysis workflow.
 3. **Interactive Interface:** A user-friendly interface for users to input their queries and receive results.
-
+---
+### Python3 Version 3.13.1
 ---
 **Members**
 - Yasmin Lützelschwab → [e-Mail](mailto:yasminesmeralda.luetzelschwab@student.unisg.ch)
@@ -60,39 +61,10 @@ The project comprises three main components:
 ```
 
 
-### Usage
-
-project-root/
-│
-├── bin/
-│   ├── resources/
-│   │   ├── json/             # JSON data saved from API
-│   │   ├── xml/              # XML responses saved locally
-│   │   └── csv/              # Final movie or script data in CSV
-│
-├── modules/
-│   ├── input_module.py       # User input handling
-│   ├── support.py            # Traceability functions
-│   ├── api_module.py         # API calls and XML/JSON processing
-│   ├── file_module.py        # File handling (titles, saving/loading)
-│   ├── analyse_module.py     # Data analysis (keywords, statistics)
-│   └── visualisation_module.py  # Graph and chart generation
-│
-└── main.py                   # Entry point for the script
-
-
 ### Files and Structure
 
-- `resources`: Save working files
-- `src`: Pythong code
-   - `cutom_classes`: To create custom Excpetions
-   - `modules`: To structure functions by purpose
-- `README.md`: Documentation for the project.
-
+![Project Structure](bin/resources/img/project_structure.png)
 
 ### License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
-
-
-### Python3 Version 3.13.1

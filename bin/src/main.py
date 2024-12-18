@@ -7,7 +7,7 @@ import modules.analyse_module as am
 import modules.visualisation_module as vm
 
 # guiding parameters
-trace = True
+trace = False
 
 # show tracebility status in console
 sup.tracebility_handling_start(trace)
